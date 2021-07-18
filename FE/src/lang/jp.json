@@ -1,0 +1,14 @@
+{
+  "home": "ホームページ",
+  "language": "言語",
+  "en_language": "英語",
+  "jp_language": "日本語",
+  "en_jp_language": "English",
+  "akaSense": "akaSense",
+  "search": "サーチ",
+  "need_candidate": "候補者が必要ですか？",
+  "need_candidate_detail": "私たちはあなたの選択基準に基づいて候補者を見つけるお手伝いをします！",
+  "no_data": "データなし！",
+  "no_data_detail": "ごめんなさい ！結果が見つかりません！",
+  "txt_search_placeholder": "候補キーワードを入力してください"
+}

@@ -1,0 +1,138 @@
+/*!
+ * Start Bootstrap - New Age v5.0.7 (https://startbootstrap.com/template-overviews/new-age)
+ * Copyright 2013-2019 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-new-age/blob/master/LICENSE)
+ */
+:root {
+  --main-bg-color: #f5deb3;
+  --main-text-color: #3e698f;
+  --extra-bg-color: #24afa6;
+  --bottom-outline-color: #ebebeb;
+  --highlight-color: #fe953d;
+  --active-text-color: #ffffff;
+  --footer-bg: #2d5d7b;
+}
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  min-width: 320px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+#mainNav {
+  background-color: var(--main-bg-color);
+}
+
+#mainNav .navbar-toggler:hover {
+  background-color: inherit;
+}
+
+#mainNav .navbar-nav .nav-item:hover {
+  cursor: pointer;
+}
+
+#mainNav .navbar-nav .nav-item:hover > a {
+  color: white !important;
+}
+
+#mainNav .navbar-nav li > a {
+  font-size: 1rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+#mainNav .navbar-nav li > a {
+  color: var(--main-text-color);
+  font-weight: 600 !important;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 15px 24px;
+}
+
+#mainNav .navbar-nav li {
+  text-align: left;
+  padding: 0;
+}
+
+#mainNav .navbar-nav {
+  background-color: transparent;
+  float: left;
+}
+
+.responsive-show-menu {
+  display: none;
+}
+
+#mainNav .toggle__menu__button {
+  display: none;
+}
+
+.nav-item a {
+  width: 100%;
+  height: 100%;
+  padding: 15px 0;
+  font-weight: 500 !important;
+}
+.responsive-show-menu {
+  display: none;
+}
+.nav-item:hover {
+  color: white !important;
+  border-radius: 5px;
+  background-color: var(--highlight-color);
+}
+
+.nav-item a {
+  width: 100%;
+  height: 100%;
+  padding: 15px 0;
+  font-weight: 500 !important;
+}
+
+@media screen and (max-width: 1200px) {
+  #mainNav .toggle__menu__button {
+    display: flex;
+    z-index: 1;
+  }
+  .logo__container {
+    padding-left: 10%;
+    padding-right: 10%;
+    width: 100%;
+    height: 57px;
+  }
+  .responsive-hidden-menu {
+    display: none;
+  }
+  #mainNav .nav-container {
+    padding: 0;
+    width: 100%;
+    max-width: 1920px;
+  }
+
+  #mainNav .navbar-nav li > a {
+    text-align: left;
+  }
+
+  #mainNav .navbar-nav li > a:focus {
+    color: white !important;
+  }
+
+  #mainNav .navbar-nav {
+    float: left;
+  }
+  #mainNav {
+    overflow: unset !important;
+    outline: 1px solid var(--bottom-outline-color);
+  }
+}
+
+@media (max-width: 1199px) {
+  .responsive-show-menu {
+    display: block;
+  }
+}
