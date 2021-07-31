@@ -1,0 +1,7 @@
+FROM continuumio/miniconda3
+
+WORKDIR /
+
+COPY environment.yml .
+
+RUN conda env create -f environment.yml || true

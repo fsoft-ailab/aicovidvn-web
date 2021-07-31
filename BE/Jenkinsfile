@@ -1,0 +1,77 @@
+pipeline {
+    environment {
+        reverseVersion = 2
+        region = "ap-southeast-1"
+        repo = "042262287476.dkr.ecr.ap-southeast-1.amazonaws.com"
+        repoName = "sounddr-be"
+        registry = "042262287476.dkr.ecr.ap-southeast-1.amazonaws.com/sounddr-be"
+    }
+
+    agent any
+
+    stages {
+        stage('Clone Git') {
+            steps {
+                  git(url: 'https://BaoNQCloud@dev.azure.com/BaoNQCloud/SoundDr/_git/TestRepo',
+                    credentialsId: 'baonq9',
+                    branch: "d_test_jenkin")
+            }
+        }
+        stage('Build Docker') {
+            steps {
+                dir('BE'){
+                    sh 'docker build -t sounddr-env -f ./Dockerfile-base .'
+                    sh 'cp -a /home/ubuntu/SoundDr/tmp-model/. ./models/'
+                    script {
+                        dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                        sh "docker rmi -f $registry:latest || true"
+                        dockerImageLatest = docker.build registry + ":latest"
+                    }
+                }
+            }
+        }
+        stage('Remove Unused docker image') {
+            steps{
+                script{
+                    def curNum = Integer.parseInt(BUILD_NUMBER)
+                    def oldVersion = curNum - Integer.parseInt(reverseVersion)
+                    sh '''
+                        DELETE_IMAGE=$(aws ecr list-images --region $region --repository-name $repoName --filter "tagStatus=UNTAGGED" --query "imageIds[*]" --output json)
+                        if (( ${#DELETE_IMAGE[@]} )); then
+                            aws ecr batch-delete-image --region $region --repository-name $repoName --image-ids "$DELETE_IMAGE"
+                        fi
+                    '''
+                    def jsonText = sh(returnStdout: true, script:'aws ecr list-images --region $region --repository-name $repoName --query "imageIds[*]" --output json')
+                    def imageList = readJSON text: jsonText
+                    def deleteList = []
+                    for (item in imageList) {
+                        def tag = item.imageTag
+                        if (tag.isInteger()){
+                            int tagNum = tag as Integer
+                            if (tagNum <= oldVersion){
+                                sh "aws ecr batch-delete-image --region $region --repository-name $repoName --image-ids imageTag=$tag"
+                                sh "docker rmi -f $registry:$tag || true"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        stage('Swap docker image') {
+            steps{
+                sh "docker kill $repoName || true"
+                sh "docker rm $repoName || true"
+                sh "docker run -d --name $repoName -p 5002:5000 $registry:latest"
+            }
+        }
+        stage('Deploy Image') {
+            steps{
+                sh "aws ecr get-login-password --region $region | docker login --username AWS --password-stdin ${repo}"
+                script {
+                    dockerImage.push()
+                    dockerImageLatest.push()
+                }
+          }
+        }
+    }
+}
